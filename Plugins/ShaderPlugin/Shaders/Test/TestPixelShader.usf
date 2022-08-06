@@ -1,0 +1,31 @@
+#include "/Engine/Public/Platform.ush"
+#include "/Engine/Private/Common.ush"  
+
+float4 SimpleColor;
+Texture2D TextureVal;
+SamplerState TextureSampler;
+
+void MainPS(
+    in float2 UV : TEXCOORD0, 
+    in float4 Position : SV_POSITION,
+    out float4 OutColor : SV_Target0
+    )
+{
+    UV.x = 1.0 - UV.x;
+    OutColor = float4(TextureVal.Sample(TextureSampler, UV.xy).rgb, 1.0f);  
+    switch (TestUniformStruct.ColorIndex)
+    {  
+        case 0 :  
+            OutColor = 0.5 * (TestUniformStruct.Color1 + OutColor);
+            break;  
+        case 1:  
+            OutColor = 0.5 * (TestUniformStruct.Color2 + OutColor);
+            break;  
+        case 2:  
+            OutColor = 0.5 * (TestUniformStruct.Color3 + OutColor);
+            break;  
+        case 3:  
+            OutColor = 0.5 * (TestUniformStruct.Color4 + OutColor);
+            break;  
+    } 
+}
